@@ -35,7 +35,7 @@ int main()
 
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser 10.1.86.194
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser outro IP
 
     int connection = connect(network_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 
