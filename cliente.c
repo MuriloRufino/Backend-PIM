@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Python.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -9,30 +8,78 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #define PORT 8080
-static PyObject *pModule = NULL;
-void python_inicializar(const char *nomearquivo)
+// gcc cliente.c -o cliente -I/usr/include/python3.12 -lpython3.12
+void iniciar_cliente(int network_socket)
 {
-    FILE *fp = fopen(nomearquivo, "r");
-    if (!fp)
-    {
-        perror("Erro ao abrir arquivo Python");
-        return;
-    }
-    Py_Initialize();
-    PyRun_SimpleString("import sys; sys.path.append('.')");
 
-    PyRun_SimpleFile(fp, nomearquivo);
-    Py_Finalize();
-    fclose(fp);
+    int continuar = 1;
+    while (continuar)
+    {
+
+        pid_t pid = fork();
+
+        if (pid == 0)
+        {
+            while (1)
+            {
+                char server_response[256];
+                memset(server_response, 0, sizeof(server_response));
+
+                int bytes = recv(network_socket, server_response, sizeof(server_response), 0);
+                if (bytes <= 0)
+                {
+                    printf("Servidor desconectado ou erro na recepção.\n");
+                    break;
+                }
+                // resposta originária de outro cliente
+                server_response[bytes] = '\0';
+                printf("\n[Servidor] %s\n> ", server_response);
+                fflush(stdout);
+            }
+        }
+
+        else
+        {
+            char message[256];
+            while (1)
+            {
+                printf("digite uma mensagem: > ");
+                fflush(stdin);
+                fgets(message, sizeof(message), stdin);
+                message[strcspn(message, "\n")] = 0;
+
+                if (strcmp(message, "sair") == 0)
+                {
+                    printf("Encerrando conexão...\n");
+                    continuar = 0;
+                    break;
+                }
+
+                if (send(network_socket, message, strlen(message) + 1, 0) == -1)
+                {
+                    printf("Erro ao enviar mensagem\n");
+                    break;
+                }
+            }
+        }
+    }
+}
+void entrada_diario(int network_socket)
+{
+    char message[256];
+    printf("Insira uma mensagem para o diário de hoje\n");
+    scanf(" %s", message);
+    if (send(network_socket, message, strlen(message) + 1, 0) == -1)
+    {
+        printf("Erro ao enviar mensagem\n");
+    }
 }
 int main()
 {
-
     // criação do socket
     int network_socket = socket(AF_INET, SOCK_STREAM, 0);
     // especificando endereço
     struct sockaddr_in server_address;
-
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
     server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser outro IP
@@ -43,98 +90,13 @@ int main()
     {
         printf("Erro na conexão\n");
     }
-    else
-    {
-        char credencial[15], senha[20];
-        printf("Insira sua credencial e sua senha\n");
-        fgets(credencial, sizeof(credencial), stdin);
-        credencial[strcspn(credencial, "\n")] = 0;
-        fgets(senha, sizeof(senha), stdin);
-        senha[strcspn(senha, "\n")] = 0;
-        send(network_socket, credencial, sizeof(credencial), 0);
-        send(network_socket, senha, sizeof(senha), 0);
-        fflush(stdin);
-        char response[256];
-        memset(response, 0, sizeof(response));
-        int bytes = recv(network_socket, response, sizeof(response), 0);
-        if (bytes <= 0)
-        {
-            printf("Servidor desconectado ou erro na recepção.\n");
-        }
-
-        if (strcmp(response, "Login Válido") == 0)
-        {
-            int continuar = 1;
-            while (continuar)
-            {
-                
-                python_inicializar("app.py");
-
-                pid_t pid = fork();
-
-                if (pid == 0)
-                {
-                    char server_response[256];
-                    while (1)
-                    {
-                        memset(server_response, 0, sizeof(server_response));
-                        int bytes = recv(network_socket, server_response, sizeof(server_response), 0);
-                        if (bytes <= 0)
-                        {
-                            printf("Servidor desconectado ou erro na recepção.\n");
-                            break;
-                        }
-                        // resposta originária de outro cliente
-                        printf("\n[Servidor] %s\n> ", server_response);
-                        fflush(stdout);
-                    }
-                }
-
-                else
-                {
-                    char message[256];
-                    while (1)
-                    {
-                        printf("digite uma mensagem: > ");
-                        fflush(stdin);
-                        fgets(message, sizeof(message), stdin);
-                        message[strcspn(message, "\n")] = 0;
-
-                        if (strcmp(message, "sair") == 0)
-                        {
-                            printf("Encerrando conexão...\n");
-                            break;
-                        }
-
-                        if (send(network_socket, message, strlen(message), 0) == -1)
-                        {
-                            printf("Erro ao enviar mensagem\n");
-                            break;
-                        }
-                    }
-                }
-                char opcao;
-                printf("Deseja voltar ao menu?[S/n]\n");
-                scanf("%c", &opcao);
-                if (opcao == 'S' || opcao == 's')
-                {
-                    continuar = 1;
-                }
-                else
-                {
-                    continuar = 0;
-                    close(network_socket);
-                    kill(pid, SIGKILL);
-                }
-                int c;
-                while ((c = getchar()) != '\n' && c != EOF);
-            }
-        }
-        else
-        {
-            printf("%s\n", response);
-        }
-
-        return 0;
+    iniciar_cliente(network_socket);
+    char op;
+    printf("Deseja inserir uma mensagem no diário eletrônico?[S/n]\n");
+    scanf("%c", &op);
+    if (op == 'S'){
+        entrada_diario(network_socket);
     }
+    
+    return 0;
 }
