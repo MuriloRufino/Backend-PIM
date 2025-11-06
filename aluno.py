@@ -65,7 +65,7 @@ class ListaAlunos:
             
         curr.nome = nome
         curr.ra = ra 
-    def remove(self, nome, ra):
+    def remove(self, ra):
         curr = self.head
         if self.head == None:
             return "Lista Vazia"

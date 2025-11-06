@@ -40,14 +40,14 @@ class ListaAtividades:
             print("Nota: ", curr.nota)
             curr = curr.next
     
-    def remove(self, value):
+    def remove(self, atividade):
         curr = self.head
         if self.head == None:
             return "Lista Vazia"
         else:
-            while curr.value != value:
+            while curr.atividade != atividade:
                 curr = curr.next
-            print("", curr.value)
+            print("", curr.atividade)
             
             if curr == self.head:
                 self.head = curr.next

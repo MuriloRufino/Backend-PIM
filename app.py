@@ -1,15 +1,12 @@
 import turma as t
-
 import importlib
-import ctypes
-import os
+#import ctypes
 import subprocess
 
-def abrir_cliente():
-    subprocess.run(["./cliente"])
-cliente = ctypes.CDLL("./cliente.so")
-cliente.main.argtypes = []
-cliente.main.restype = None
+
+# cliente = ctypes.CDLL("./cliente.so")
+# cliente.main.argtypes = []
+# cliente.main.restype = None
 
     
 def executar_script(nome, credencial, senha):
@@ -97,5 +94,5 @@ if executar_script("inicio", credencial, senha):
         print("9 - Consultar aulas de uma turma\n10 - Buscar aula de uma turma\n11 - Remover aula de uma turma\n12 - Trocar mensagens")
         opcao = int(input("Para sair do menu, digite um número não disponível nas opções, você será direcionado ao chat entre usuários\n"))
 
-    abrir_cliente()
+    subprocess.run(["./cliente"])
 

@@ -9,71 +9,85 @@
 #include <signal.h>
 #define PORT 8080
 // gcc cliente.c -o cliente -I/usr/include/python3.12 -lpython3.12
-void iniciar_cliente(int network_socket)
-{
-
-    int continuar = 1;
-    while (continuar)
-    {
-
-        pid_t pid = fork();
-
-        if (pid == 0)
-        {
-            while (1)
-            {
-                char server_response[256];
-                memset(server_response, 0, sizeof(server_response));
-
-                int bytes = recv(network_socket, server_response, sizeof(server_response), 0);
-                if (bytes <= 0)
-                {
-                    printf("Servidor desconectado ou erro na recepção.\n");
-                    break;
-                }
-                // resposta originária de outro cliente
-                server_response[bytes] = '\0';
-                printf("\n[Servidor] %s\n> ", server_response);
-                fflush(stdout);
-            }
-        }
-
-        else
-        {
-            char message[256];
-            while (1)
-            {
-                printf("digite uma mensagem: > ");
-                fflush(stdin);
-                fgets(message, sizeof(message), stdin);
-                message[strcspn(message, "\n")] = 0;
-
-                if (strcmp(message, "sair") == 0)
-                {
-                    printf("Encerrando conexão...\n");
-                    continuar = 0;
-                    break;
-                }
-
-                if (send(network_socket, message, strlen(message) + 1, 0) == -1)
-                {
-                    printf("Erro ao enviar mensagem\n");
-                    break;
-                }
-            }
-        }
-    }
-}
 void entrada_diario(int network_socket)
 {
     char message[256];
     printf("Insira uma mensagem para o diário de hoje\n");
-    scanf(" %s", message);
-    if (send(network_socket, message, strlen(message) + 1, 0) == -1)
+    fflush(stdin);
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = 0;
+    char diario_msg[300];
+    snprintf(diario_msg, sizeof(diario_msg), "/diario %s", message);
+    if (send(network_socket, diario_msg, strlen(diario_msg) + 1, 0) == -1)
     {
-        printf("Erro ao enviar mensagem\n");
+        printf("Erro ao enviar mensagem do diário\n");
+    }
+   
+}
+
+void iniciar_cliente(int network_socket)
+{
+
+    pid_t pid = fork();
+    if (pid == 0)
+    {
+
+        while (1)
+        {
+            char server_response[256];
+            memset(server_response, 0, sizeof(server_response));
+
+            int bytes = recv(network_socket, server_response, sizeof(server_response), 0);
+            if (bytes <= 0)
+            {
+                printf("Servidor desconectado ou erro na recepção.\n");
+                break;
+            }
+            server_response[bytes] = '\0';
+            server_response[strcspn(server_response, "\r\n")] = 0;
+            if (strncmp(server_response, "/diario", 7) == 0)
+            {
+                // recv(network_socket, server_response, sizeof(server_response), 0);
+                printf("\n[Servidor - Diário] %s\n", server_response + 8);
+            }
+            // resposta originária de outro cliente
+            else{
+                printf("\n[Servidor] %s\n> ", server_response);
+            }
+            fflush(stdout);
+        }
+    }
+
+    else
+    {
+        char message[256];
+        while (1)
+        {
+
+            printf("digite uma mensagem: > ");
+            fflush(stdin);
+            fgets(message, sizeof(message), stdin);
+            message[strcspn(message, "\n")] = 0;
+
+            if (strcmp(message, "sair") == 0)
+            {
+                printf("Encerrando conexão...\n");
+                break;
+            }
+            if (strncmp(message, "/diario ", 8) == 0)
+            {
+                entrada_diario(network_socket);
+                continue;
+            }
+            if (send(network_socket, message, strlen(message) + 1, 0) == -1)
+            {
+                printf("Erro ao enviar mensagem\n");
+                break;
+            }
+        }
     }
 }
+
 int main()
 {
     // criação do socket
@@ -92,11 +106,6 @@ int main()
     }
     iniciar_cliente(network_socket);
     char op;
-    printf("Deseja inserir uma mensagem no diário eletrônico?[S/n]\n");
-    scanf("%c", &op);
-    if (op == 'S'){
-        entrada_diario(network_socket);
-    }
-    
+
     return 0;
 }

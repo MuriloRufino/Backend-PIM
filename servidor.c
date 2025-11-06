@@ -20,8 +20,16 @@ void passar_mensagens(int from, int to) //fonte: IA
         {   
             break;
         }
-
-        send(to, buffer, bytes, 0);
+        buffer[strcspn(buffer, "\r\n")] = 0;
+        if(strncmp(buffer, "/diario", 7) == 0){
+            
+            send(to, buffer, strlen(buffer) + 1, 0);
+            send(from, buffer, strlen(buffer) + 1, 0);
+            continue;
+        }
+        else{
+            send(to, buffer, bytes, 0);
+        }
     }
 
     close(from);
@@ -81,7 +89,7 @@ int main()
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); //no oficial, vai ser INADDR_ANY
+    server_address.sin_addr.s_addr = INADDR_ANY; //no oficial, vai ser INADDR_ANY
     struct sockaddr_in client_address;
     socklen_t addrsize = sizeof(client_address);
     // ligando o socket no ip e porta especificados, setsockopt usado para garantir que a porta esteja desocupada
@@ -95,7 +103,17 @@ int main()
     int client_sockets[2], client_socket;
     trocar_mensagens(server_socket, client_socket, client_address, addrsize);
     char server_response[256];
-    recv(client_socket, server_response, sizeof(server_response), 0)
-    
+    client_socket = accept(
+            server_socket, (struct sockaddr *)&client_address,
+            &addrsize);
+    client_sockets[0] = client_socket;
+    client_socket = accept(
+            server_socket, (struct sockaddr *)&client_address,
+            &addrsize);
+    client_sockets[1] = client_socket;
+    recv(client_sockets[0], server_response, sizeof(server_response), 0);
+    recv(client_sockets[1], server_response, sizeof(server_response), 0);
+    send(client_sockets[0], server_response, strlen(server_response) + 1, 0);
+    send(client_sockets[1], server_response, strlen(server_response) + 1, 0);
     return 0;
 }
