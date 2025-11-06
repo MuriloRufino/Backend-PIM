@@ -6,9 +6,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
 #define PORT 8080
-//gcc servidor.c -o servidor -I/usr/include/python3.12 -lpython3.12
+
 void passar_mensagens(int from, int to) //fonte: IA
 {
     char buffer[256];
@@ -89,7 +88,7 @@ int main()
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = INADDR_ANY; //no oficial, vai ser INADDR_ANY
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); //no oficial, vai ser INADDR_ANY
     struct sockaddr_in client_address;
     socklen_t addrsize = sizeof(client_address);
     // ligando o socket no ip e porta especificados, setsockopt usado para garantir que a porta esteja desocupada
@@ -99,21 +98,8 @@ int main()
     //"escutando" conexões
     listen(server_socket, 2);
     printf("Escutando\n");
-    pid_t childpid;
     int client_sockets[2], client_socket;
     trocar_mensagens(server_socket, client_socket, client_address, addrsize);
-    char server_response[256];
-    client_socket = accept(
-            server_socket, (struct sockaddr *)&client_address,
-            &addrsize);
-    client_sockets[0] = client_socket;
-    client_socket = accept(
-            server_socket, (struct sockaddr *)&client_address,
-            &addrsize);
-    client_sockets[1] = client_socket;
-    recv(client_sockets[0], server_response, sizeof(server_response), 0);
-    recv(client_sockets[1], server_response, sizeof(server_response), 0);
-    send(client_sockets[0], server_response, strlen(server_response) + 1, 0);
-    send(client_sockets[1], server_response, strlen(server_response) + 1, 0);
+
     return 0;
 }

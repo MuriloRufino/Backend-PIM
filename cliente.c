@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #define PORT 8080
-// gcc cliente.c -o cliente -I/usr/include/python3.12 -lpython3.12
+
 void entrada_diario(int network_socket)
 {
     char message[256];
@@ -47,10 +47,9 @@ void iniciar_cliente(int network_socket)
             server_response[strcspn(server_response, "\r\n")] = 0;
             if (strncmp(server_response, "/diario", 7) == 0)
             {
-                // recv(network_socket, server_response, sizeof(server_response), 0);
                 printf("\n[Servidor - Diário] %s\n", server_response + 8);
             }
-            // resposta originária de outro cliente
+            //resposta originária de outro cliente
             else{
                 printf("\n[Servidor] %s\n> ", server_response);
             }
@@ -96,7 +95,7 @@ int main()
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser outro IP
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); //no oficial, vai ser outro IP
 
     int connection = connect(network_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 
@@ -105,7 +104,7 @@ int main()
         printf("Erro na conexão\n");
     }
     iniciar_cliente(network_socket);
-    char op;
+    
 
     return 0;
 }
