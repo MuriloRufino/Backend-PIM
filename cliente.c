@@ -14,7 +14,6 @@ void entrada_diario(int network_socket)
 {
     char message[256];
     printf("Insira uma mensagem para o diário de hoje\n");
-
     fgets(message, sizeof(message), stdin);
     message[strcspn(message, "\r\n")] = 0;
     char diario_msg[300];
@@ -29,7 +28,6 @@ void iniciar_cliente(int network_socket)
 {
 
     pid_t pid = fork();
-    //printf("Para enviar mensagens pelo diario, use /diario (mensagem), se quiser usar o chat normal, apenas digite a mensagem\n");
     if (pid == 0)
     {
 
@@ -48,7 +46,7 @@ void iniciar_cliente(int network_socket)
             server_response[strcspn(server_response, "\r\n")] = 0;
             if (strncmp(server_response, "/diario ", 8) == 0) // strncmp compara um número definido de caracteres nas strings
             {
-                printf("\n[Servidor - Diário] %s\n", server_response + 8);
+                printf("\n[Diário] %s\n", server_response + 8);
             }
 
             else
@@ -81,23 +79,6 @@ void iniciar_cliente(int network_socket)
                 entrada_diario(network_socket);
                 continue;
             }
-            // if (strncmp(message, "/registro", 10) == 0)
-            // {
-            //     char nome[50], inicio[5], fim[5], professor[50], conteudo[1000];
-            //     printf("Insira os dados:\n");
-            //     printf("Nome da aula:\n");
-            //     scanf(" %s", &nome);
-            //     printf("Horário de início:\n");
-            //     scanf(" %s", &inicio);
-            //     printf("Horário do fim:\n");
-            //     scanf(" %s", &fim);
-            //     printf("Nome do professor:\n");
-            //     scanf(" %s", &professor);
-            //     printf("Conteúdo da aula:\n");
-            //     scanf(" %s", &conteudo);
-            //     enviar_aula(nome, inicio, fim, professor, conteudo);
-            //     continue;
-            // }
             if (send(network_socket, message, strlen(message) + 1, 0) == -1)
             {
                 printf("Erro ao enviar mensagem\n");

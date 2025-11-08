@@ -28,13 +28,6 @@ void passar_mensagens(int from, int to) // fonte: IA
             send(from, buffer, strlen(buffer) + 1, 0);
             continue;
         }
-        if (strncmp(buffer, "/registro ", 10) == 0)
-        {
-            send(to, buffer, strlen(buffer) + 1, 0);
-            send(from, buffer, strlen(buffer) + 1, 0);
-            continue;
-           
-        }
         else
         {
             send(to, buffer, bytes, 0);

@@ -1,4 +1,3 @@
-#essa classe é pro registro de aulas
 class Aula:
     def __init__(self, nome, inicio, fim, curso, professor, conteudo):
         self.next = None
@@ -9,8 +8,7 @@ class Aula:
         self.curso = curso
         self.professor = professor
         self.conteudo = conteudo
-
-
+        
 class ListaAulas:
     def __init__(self):
         self.head = None
