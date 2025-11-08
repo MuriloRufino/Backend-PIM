@@ -40,27 +40,6 @@ class ListaTurmas:
                 turma.prev = curr.prev
                 curr.prev.next = turma
                 curr.prev = turma
-        # print("Deseja inserir alunos? [S/n]")
-        # opcao = input()
-        # while opcao == "S":
-        #     print("Insira o nome, RA, e atividades do aluno, se houver")
-        #     nome = input()
-        #     ra = input()
-        #     turma.alunos.insert(nome, ra)
-        #     print("Deseja continuar inserindo alunos? [S/n]")
-        #     opcao = input()
-        # print("Inserção de alunos encerrada")
-        # print("Deseja inserir aulas? [S/n]")
-        # opcao1 = input()
-        # while opcao1 == "S":
-        #     print("Insira o nome, horário e professor da aula")
-        #     nome = input()
-        #     horario = input()
-        #     professor = input()
-        #     turma.aulas.insert(nome, horario, curso , professor)
-        #     print("Deseja continuar inserindo aulas? [S/n]")
-        #     opcao1 = input()
-        # print("Inserção de aulas encerrada")
     def print(self):
         curr = self.head
         while curr is not None:

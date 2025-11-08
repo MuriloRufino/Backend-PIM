@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -8,25 +9,34 @@
 #include <arpa/inet.h>
 #define PORT 8080
 
-void passar_mensagens(int from, int to) //fonte: IA
+void passar_mensagens(int from, int to) // fonte: IA
 {
+
     char buffer[256];
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
         int bytes = recv(from, buffer, sizeof(buffer), 0);
         if (bytes <= 0)
-        {   
+        {
             break;
         }
         buffer[strcspn(buffer, "\r\n")] = 0;
-        if(strncmp(buffer, "/diario", 7) == 0){
-            
+        if (strncmp(buffer, "/diario", 7) == 0)
+        {
             send(to, buffer, strlen(buffer) + 1, 0);
             send(from, buffer, strlen(buffer) + 1, 0);
             continue;
         }
-        else{
+        if (strncmp(buffer, "/registro ", 10) == 0)
+        {
+            send(to, buffer, strlen(buffer) + 1, 0);
+            send(from, buffer, strlen(buffer) + 1, 0);
+            continue;
+           
+        }
+        else
+        {
             send(to, buffer, bytes, 0);
         }
     }
@@ -35,7 +45,8 @@ void passar_mensagens(int from, int to) //fonte: IA
     close(to);
 }
 
-void trocar_mensagens(int server_socket, int client_socket, struct sockaddr_in client_address, socklen_t addrsize){
+void trocar_mensagens(int server_socket, int client_socket, struct sockaddr_in client_address, socklen_t addrsize)
+{
 
     int cnt = 0, num_clients = 0, client_sockets[2];
     while (1)
@@ -44,7 +55,7 @@ void trocar_mensagens(int server_socket, int client_socket, struct sockaddr_in c
         client_socket = accept(
             server_socket, (struct sockaddr *)&client_address,
             &addrsize);
-    
+
         if (client_socket < 0)
         {
             printf("Erro no socket do cliente\n");
@@ -76,11 +87,11 @@ void trocar_mensagens(int server_socket, int client_socket, struct sockaddr_in c
             num_clients = 0; // reseta o contador para aceitar uma nova dupla
         }
     }
-
 }
 
 int main()
 {
+
     // criando socket do servidor
     int server_socket;
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -88,7 +99,7 @@ int main()
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); //no oficial, vai ser INADDR_ANY
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser INADDR_ANY
     struct sockaddr_in client_address;
     socklen_t addrsize = sizeof(client_address);
     // ligando o socket no ip e porta especificados, setsockopt usado para garantir que a porta esteja desocupada
@@ -100,6 +111,6 @@ int main()
     printf("Escutando\n");
     int client_sockets[2], client_socket;
     trocar_mensagens(server_socket, client_socket, client_address, addrsize);
-
+    
     return 0;
 }

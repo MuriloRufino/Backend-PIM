@@ -34,17 +34,6 @@ class ListaAlunos:
                 aluno.prev = curr.prev
                 curr.prev.next = aluno
                 curr.prev = aluno
-        print("Deseja inserir atividades? [S/n]")
-        opcao = input()
-        while opcao == "S":
-            print("Insira o nome e a nota da atividade, se houver")
-            nome = input()
-            nota = input()
-            aluno.atividades.insert(nome, nota)
-            print("Deseja continuar inserindo atividades? [S/n]")
-            opcao = input()
-            
-        print("Inserção de atividades encerrada\n")
     def print(self):
         curr = self.head
         print("Deseja mostrar as atividades dos alunos? [S/n]")

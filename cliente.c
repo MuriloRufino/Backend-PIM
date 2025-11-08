@@ -9,26 +9,27 @@
 #include <signal.h>
 #define PORT 8080
 
+
 void entrada_diario(int network_socket)
 {
     char message[256];
     printf("Insira uma mensagem para o diário de hoje\n");
-    fflush(stdin);
+
     fgets(message, sizeof(message), stdin);
-    message[strcspn(message, "\n")] = 0;
+    message[strcspn(message, "\r\n")] = 0;
     char diario_msg[300];
     snprintf(diario_msg, sizeof(diario_msg), "/diario %s", message);
     if (send(network_socket, diario_msg, strlen(diario_msg) + 1, 0) == -1)
     {
         printf("Erro ao enviar mensagem do diário\n");
     }
-   
 }
 
 void iniciar_cliente(int network_socket)
 {
 
     pid_t pid = fork();
+    //printf("Para enviar mensagens pelo diario, use /diario (mensagem), se quiser usar o chat normal, apenas digite a mensagem\n");
     if (pid == 0)
     {
 
@@ -45,13 +46,14 @@ void iniciar_cliente(int network_socket)
             }
             server_response[bytes] = '\0';
             server_response[strcspn(server_response, "\r\n")] = 0;
-            if (strncmp(server_response, "/diario", 7) == 0)
+            if (strncmp(server_response, "/diario ", 8) == 0) // strncmp compara um número definido de caracteres nas strings
             {
                 printf("\n[Servidor - Diário] %s\n", server_response + 8);
             }
-            //resposta originária de outro cliente
-            else{
-                printf("\n[Servidor] %s\n> ", server_response);
+
+            else
+            {
+                printf("\n[Servidor] %s\n> ", server_response); // resposta originária de outro cliente
             }
             fflush(stdout);
         }
@@ -59,11 +61,12 @@ void iniciar_cliente(int network_socket)
 
     else
     {
+        printf("Para enviar uma mensagem ao diário, use /diario (mensagem), para usar o chat, apenas digite normalmente\n");
         char message[256];
         while (1)
         {
 
-            printf("digite uma mensagem: > ");
+            printf("> ");
             fflush(stdin);
             fgets(message, sizeof(message), stdin);
             message[strcspn(message, "\n")] = 0;
@@ -78,6 +81,23 @@ void iniciar_cliente(int network_socket)
                 entrada_diario(network_socket);
                 continue;
             }
+            // if (strncmp(message, "/registro", 10) == 0)
+            // {
+            //     char nome[50], inicio[5], fim[5], professor[50], conteudo[1000];
+            //     printf("Insira os dados:\n");
+            //     printf("Nome da aula:\n");
+            //     scanf(" %s", &nome);
+            //     printf("Horário de início:\n");
+            //     scanf(" %s", &inicio);
+            //     printf("Horário do fim:\n");
+            //     scanf(" %s", &fim);
+            //     printf("Nome do professor:\n");
+            //     scanf(" %s", &professor);
+            //     printf("Conteúdo da aula:\n");
+            //     scanf(" %s", &conteudo);
+            //     enviar_aula(nome, inicio, fim, professor, conteudo);
+            //     continue;
+            // }
             if (send(network_socket, message, strlen(message) + 1, 0) == -1)
             {
                 printf("Erro ao enviar mensagem\n");
@@ -89,13 +109,14 @@ void iniciar_cliente(int network_socket)
 
 int main()
 {
+
     // criação do socket
     int network_socket = socket(AF_INET, SOCK_STREAM, 0);
     // especificando endereço
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); //no oficial, vai ser outro IP
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser outro IP
 
     int connection = connect(network_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 
@@ -104,7 +125,6 @@ int main()
         printf("Erro na conexão\n");
     }
     iniciar_cliente(network_socket);
-    
 
     return 0;
 }

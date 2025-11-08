@@ -1,20 +1,23 @@
+#essa classe é pro registro de aulas
 class Aula:
-    def __init__(self, nome, horario, curso, professor):
+    def __init__(self, nome, inicio, fim, curso, professor, conteudo):
         self.next = None
         self.prev = None
         self.nome = nome
-        self.horario = horario
+        self.inicio = inicio
+        self.fim = fim
         self.curso = curso
         self.professor = professor
+        self.conteudo = conteudo
 
 
 class ListaAulas:
     def __init__(self):
         self.head = None
         self.tail = None
-    def insert(self, nome, horario, curso, professor):
+    def insert(self, nome, inicio, fim, curso, professor, conteudo):
         curr = self.head
-        aula = Aula(nome, horario, curso, professor)
+        aula = Aula(nome, inicio, fim, curso, professor, conteudo)
         if self.head is None:
             self.head = aula
             self.tail = aula
@@ -39,7 +42,8 @@ class ListaAulas:
         print("Aulas:")
         while curr is not None:
             print("Nome: ", curr.nome)
-            print("Horário: ", curr.horario)
+            print("Início: ", curr.inicio)
+            print("Fim: ", curr.fim)
             print("Curso: ", curr.curso)
             print("Professor: ", curr.professor)
             curr = curr.next
@@ -62,15 +66,17 @@ class ListaAulas:
                 if curr.next is not None:
                     curr.prev.next = curr.next
                     curr.next.prev = curr.prev
-    def search(self, nome, curso):
+    def search(self, nome):
         curr = self.head
         while curr.nome != nome:
-            if(curr == self.tail and curr.nome != nome and curr.curso != curso):
+            if(curr == self.tail and curr.nome != nome):
                 return "Aula não encontrada"
             curr = curr.next
         print("Aula encontrada:\n")
         print("Nome:", curr.nome)
         print("Curso:", curr.curso)
-        print("Horário:", curr.horario)
+        print("Início: ", curr.inicio)
+        print("Fim: ", curr.fim)
         print("Professor: ", curr.professor)
-        
+        print("Conteudo:", curr.conteudo)
+    
