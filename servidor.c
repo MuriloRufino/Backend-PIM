@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #define PORT 8080
 
-void passar_mensagens(int from, int to) // fonte: IA
+void passar_mensagens(int from, int to) 
 {
 
     char buffer[256];
