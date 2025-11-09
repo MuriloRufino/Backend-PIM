@@ -28,10 +28,9 @@ void passar_mensagens(int from, int to) // fonte: IA
             send(from, buffer, strlen(buffer) + 1, 0);
             continue;
         }
-        else
-        {
-            send(to, buffer, bytes, 0);
-        }
+        
+        send(to, buffer, bytes, 0);
+        
     }
 
     close(from);

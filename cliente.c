@@ -85,6 +85,7 @@ void iniciar_cliente(int network_socket)
                 break;
             }
         }
+        close(network_socket);
     }
 }
 
