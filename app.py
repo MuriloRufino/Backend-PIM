@@ -96,9 +96,11 @@ if cadastro_login("inicio", credencial, senha):
             curso = input()
             turma1 = turma.search(numero, curso)
             nome = input("Insira o nome, horario, e professor da aula\n")
-            horario = input()
+            inicio = input()
+            fim = input()
             professor = input()
-            turma1.aulas.insert(nome, horario, curso, professor)
+            conteudo = input()
+            turma1.aulas.insert(nome, inicio, fim, curso, professor, conteudo)
         elif opcao == 13:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
