@@ -36,7 +36,11 @@ if cadastro_login("inicio", credencial, senha):
         elif opcao == 3:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma.search(numero, curso)
+            turma1 = turma.search(numero, curso)
+            print("Turma encontrada:\n")
+            print("Numero:", numero)
+            print("Curso:", curso)
+            turma1.alunos.print()
         elif opcao == 4:
             numero = int(input("Insira o número da turma\n"))
             turma.remove(numero)

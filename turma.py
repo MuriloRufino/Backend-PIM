@@ -81,10 +81,6 @@ class ListaTurmas:
             if(curr == self.tail and curr.numero != numero and curr.curso != curso):
                 return "Turma não encontrada"
             curr = curr.next
-        print("Turma encontrada:\n")
-        print("Numero:", numero)
-        print("Curso:", curso)
-        curr.alunos.print()
         return curr
        
     
