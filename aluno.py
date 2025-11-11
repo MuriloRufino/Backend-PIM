@@ -45,15 +45,6 @@ class ListaAlunos:
                 print("Atividades:")
                 curr.atividades.print()
             curr = curr.next
-    def update(self, nome, ra):
-        curr = self.head
-        while curr.ra != ra:
-            if(curr == self.tail and curr.ra != ra):
-                return "Turma não encontrada"
-            curr = curr.next
-            
-        curr.nome = nome
-        curr.ra = ra 
     def remove(self, ra):
         curr = self.head
         if self.head == None:

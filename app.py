@@ -22,11 +22,11 @@ if cadastro_login("inicio", credencial, senha):
     turma = t.ListaTurmas()
     print("O que deseja fazer?\n1 - Inserir turmas\n2 - Consultar turmas\n3 - Buscar turma\n4 - Remover turma")
     print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n6 - Buscar aluno de uma turma\n7 - Remover aluno de uma turma\n8 - Inserir novas atividades para um aluno")
-    print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividade de um aluno\n12 - Inserir aulas em uma turma\n13 - Consultar aulas de uma turma")
-    print("14 - Buscar aula de uma turma\n15 - Remover aula de uma turma\n16- Trocar mensagens (Diário eletrônico e chat)")
+    print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividade de um aluno\n12 - Atualizar nota de uma atividade\n13 - Inserir aulas em uma turma\n14 - Consultar aulas de uma turma")
+    print("15 - Buscar aula de uma turma\n16 - Remover aula de uma turma\n17- Trocar mensagens (Diário eletrônico e chat)")
 
     opcao = int(input())
-    while opcao >= 1 and opcao <= 16:
+    while opcao >= 1 and opcao <= 17:
         if opcao == 1:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
@@ -95,6 +95,15 @@ if cadastro_login("inicio", credencial, senha):
             aluno = turma1.alunos.search(ra)
             nome = input("Insira o nome da atividade")
             aluno.atividades.remove(nome)
+        elif opcao == 12:
+            numero = int(input("Insira o número e o curso da turma\n"))
+            curso = input()
+            turma1 = turma.search(numero, curso)
+            ra = input("Insira o ra do aluno\n")
+            aluno = turma1.alunos.search(ra)
+            nome = input("Insira o nome da atividade")
+            nota = int(input("Insira a nova nota da atividade"))
+            aluno.atividades.atualizar_nota(nome, nota)
         elif opcao == 12:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
@@ -138,9 +147,9 @@ if cadastro_login("inicio", credencial, senha):
         
         print("O que deseja fazer?\n1 - Inserir turmas\n2 - Consultar turmas\n3 - Buscar turma\n4 - Remover turma")
         print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n6 - Buscar aluno de uma turma\n7 - Remover aluno de uma turma\n8 - Inserir novas atividades para um aluno")
-        print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividades de um aluno\n12 - Inserir aulas em uma turma\n13 - Consultar aulas de uma turma")
-        print("14 - Buscar aula de uma turma\n15 - Remover aula de uma turma\n16 - Trocar mensagens (Diário eletrônico e chat)")
-        opcao = int(input("Para sair do menu, digite um número não disponível nas opções, você será direcionado ao chat entre usuários\n"))
+        print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividade de um aluno\n12 - Atualizar nota de uma atividade\n13 - Inserir aulas em uma turma\n14 - Consultar aulas de uma turma")
+        print("15 - Buscar aula de uma turma\n16 - Remover aula de uma turma\n17- Trocar mensagens (Diário eletrônico e chat)")
+        opcao = int(input("Para encerrar a execução, digite um número não disponível nas opções, você será direcionado ao chat entre usuários\n"))
 
     
 

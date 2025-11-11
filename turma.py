@@ -47,15 +47,7 @@ class ListaTurmas:
             print("Curso:", curr.curso)
             curr.alunos.print()
             curr = curr.next
-    def update(self, numero, curso):
-        curr = self.head
-        while curr.numero != numero and curr.curso != curso:
-            if(curr == self.tail and curr.numero != numero and curr.curso != curso):
-                return "Turma não encontrada"
-            curr = curr.next
-            
-        curr.numero = numero
-        curr.curso = curso 
+    
         
     def remove(self, numero):
         curr = self.head
