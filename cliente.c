@@ -59,7 +59,7 @@ void iniciar_cliente(int network_socket)
 
     else
     {
-        printf("Para enviar uma mensagem ao diário, use /diario (mensagem), para usar o chat, apenas digite normalmente\n");
+        printf("Para enviar uma mensagem ao diário, use /diario (mensagem), para usar o chat, apenas digite normalmente, para voltar ao menu, digite sair\n");
         char message[256];
         while (1)
         {

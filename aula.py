@@ -1,8 +1,9 @@
 class Aula:
-    def __init__(self, nome, inicio, fim, curso, professor, conteudo):
+    def __init__(self, nome, data ,inicio, fim, curso, professor, conteudo):
         self.next = None
         self.prev = None
         self.nome = nome
+        self.data = data
         self.inicio = inicio
         self.fim = fim
         self.curso = curso
@@ -13,9 +14,9 @@ class ListaAulas:
     def __init__(self):
         self.head = None
         self.tail = None
-    def insert(self, nome, inicio, fim, curso, professor, conteudo):
+    def insert(self, nome, data, inicio, fim, curso, professor, conteudo):
         curr = self.head
-        aula = Aula(nome, inicio, fim, curso, professor, conteudo)
+        aula = Aula(nome, data, inicio, fim, curso, professor, conteudo)
         if self.head is None:
             self.head = aula
             self.tail = aula
@@ -73,6 +74,7 @@ class ListaAulas:
         print("Aula encontrada:\n")
         print("Nome:", curr.nome)
         print("Curso:", curr.curso)
+        print("Data:", curr.data)
         print("Início: ", curr.inicio)
         print("Fim: ", curr.fim)
         print("Professor: ", curr.professor)

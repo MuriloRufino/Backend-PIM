@@ -23,10 +23,10 @@ if cadastro_login("inicio", credencial, senha):
     print("O que deseja fazer?\n1 - Inserir turmas\n2 - Consultar turmas\n3 - Buscar turma\n4 - Remover turma")
     print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n6 - Buscar aluno de uma turma\n7 - Remover aluno de uma turma\n8 - Inserir novas atividades para um aluno")
     print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividade de um aluno\n12 - Inserir aulas em uma turma\n13 - Consultar aulas de uma turma")
-    print("14 - Buscar aula de uma turma\n15 - Remover aula de uma turma\nOutro - Trocar mensagens (Diário eletrônico e chat)")
+    print("14 - Buscar aula de uma turma\n15 - Remover aula de uma turma\n16- Trocar mensagens (Diário eletrônico e chat)")
 
     opcao = int(input())
-    while opcao >= 1 and opcao <= 15:
+    while opcao >= 1 and opcao <= 16:
         if opcao == 1:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
@@ -100,11 +100,12 @@ if cadastro_login("inicio", credencial, senha):
             curso = input()
             turma1 = turma.search(numero, curso)
             nome = input("Insira os dados:\nNome da aula\n")
+            data = input("Data da aula:\n")
             inicio = input("Hora de início:\n")
             fim = input("Hora do fim:\n")
             professor = input("Nome do professor:\n")
             conteudo = input("Conteudo da aula:\n")
-            turma1.aulas.insert(nome, inicio, fim, curso, professor, conteudo)
+            turma1.aulas.insert(nome, data, inicio, fim, curso, professor, conteudo)
         elif opcao == 13:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
@@ -122,16 +123,16 @@ if cadastro_login("inicio", credencial, senha):
             turma1 = turma.search(numero, curso)
             nome = input("Insira o nome da aula\n")
             turma1.aulas.remove(nome, curso)
-
-            
+        else:
+            subprocess.run(["./cliente"])
                         
         
         
         print("O que deseja fazer?\n1 - Inserir turmas\n2 - Consultar turmas\n3 - Buscar turma\n4 - Remover turma")
         print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n6 - Buscar aluno de uma turma\n7 - Remover aluno de uma turma\n8 - Inserir novas atividades para um aluno")
         print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividades de um aluno\n12 - Inserir aulas em uma turma\n13 - Consultar aulas de uma turma")
-        print("14 - Buscar aula de uma turma\n15 - Remover aula de uma turma\nOutro - Trocar mensagens (Diário eletrônico e chat)")
+        print("14 - Buscar aula de uma turma\n15 - Remover aula de uma turma\n16 - Trocar mensagens (Diário eletrônico e chat)")
         opcao = int(input("Para sair do menu, digite um número não disponível nas opções, você será direcionado ao chat entre usuários\n"))
 
-    subprocess.run(["./cliente"])
+    
 
