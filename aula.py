@@ -71,12 +71,5 @@ class ListaAulas:
             if(curr == self.tail and curr.nome != nome):
                 return "Aula não encontrada"
             curr = curr.next
-        print("Aula encontrada:\n")
-        print("Nome:", curr.nome)
-        print("Curso:", curr.curso)
-        print("Data:", curr.data)
-        print("Início: ", curr.inicio)
-        print("Fim: ", curr.fim)
-        print("Professor: ", curr.professor)
-        print("Conteudo:", curr.conteudo)
+        return curr
     
