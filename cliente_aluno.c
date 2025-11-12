@@ -10,20 +10,6 @@
 #define PORT 8080
 
 
-void entrada_diario(int network_socket)
-{
-    char message[256];
-    printf("Insira uma mensagem para o diário de hoje\n");
-    fgets(message, sizeof(message), stdin);
-    message[strcspn(message, "\r\n")] = 0;
-    char diario_msg[300];
-    snprintf(diario_msg, sizeof(diario_msg), "/diario %s", message);
-    if (send(network_socket, diario_msg, strlen(diario_msg) + 1, 0) == -1)
-    {
-        printf("Erro ao enviar mensagem do diário\n");
-    }
-}
-
 void iniciar_cliente(int network_socket)
 {
 
@@ -59,7 +45,7 @@ void iniciar_cliente(int network_socket)
 
     else
     {
-        printf("Para enviar uma mensagem ao diário, use /diario e aperte enter, para usar o chat, apenas digite normalmente, para voltar ao menu, digite sair\n");
+        printf("Para usar o chat, apenas digite normalmente, para voltar ao menu, digite sair\n");
         char message[256];
         while (1)
         {
@@ -74,11 +60,7 @@ void iniciar_cliente(int network_socket)
                 printf("Encerrando conexão...\n");
                 break;
             }
-            if (strncmp(message, "/diario ", 8) == 0)
-            {
-                entrada_diario(network_socket);
-                continue;
-            }
+        
             if (send(network_socket, message, strlen(message) + 1, 0) == -1)
             {
                 printf("Erro ao enviar mensagem\n");

@@ -9,9 +9,10 @@ def login(credencial, senha):
         while ctemp != "":
             stemp = f.readline().strip()
             if ctemp == credencial and stemp == senha:
-                return True
+                is_professor = ctemp.startswith(("p", "P"))
+                return True, is_professor
             ctemp = f.readline().strip()
-        return False
+        return False, False
 
 
 

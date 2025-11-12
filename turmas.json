@@ -1,0 +1,33 @@
+[
+    {
+        "numero": 1,
+        "curso": "ADS",
+        "alunos": [
+            {
+                "nome": "Bruno",
+                "ra": "A51",
+                "atividades": [
+                    {
+                        "nome": "Atividade 1",
+                        "nota": 9
+                    },
+                    {
+                        "nome": "Atividade 2",
+                        "nota": 0
+                    }
+                ]
+            }
+        ],
+        "aulas": [
+            {
+                "nome": "a",
+                "data": "data",
+                "inicio": "sim",
+                "fim": "nao",
+                "curso": "ADS",
+                "professor": "valter",
+                "conteudo": "alo"
+            }
+        ]
+    }
+]

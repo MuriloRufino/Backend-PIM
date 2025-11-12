@@ -1,113 +1,112 @@
 import turma as t
-import importlib
 import subprocess
+import inicio
 
-
-def cadastro_login(nome, credencial, senha):
-    mod = importlib.import_module(nome)
-    if(mod.login(credencial, senha) == False):
-        opcao = input("Login inválido, deseja fazer o cadastro?[S/n]")
-        if(opcao == "S"):
-            mod.cadastro(credencial, senha)
-            return True
-        return False
-    
-    mod.login(credencial, senha)
-    return True
-
-
+listaturma = t.ListaTurmas()
+listaturma.carregar_de_arquivo("turmas.json")
 credencial = input("Insira sua credencial e senha\n")
 senha = input()
-if cadastro_login("inicio", credencial, senha):
-    turma = t.ListaTurmas()
+if inicio.login(credencial, senha) == (True, True):
+    
     print("O que deseja fazer?\n1 - Inserir turmas\n2 - Consultar turmas\n3 - Buscar turma\n4 - Remover turma")
-    print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n6 - Buscar aluno de uma turma\n7 - Remover aluno de uma turma\n8 - Inserir novas atividades para um aluno")
-    print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividade de um aluno\n12 - Atualizar nota de uma atividade\n13 - Inserir aulas em uma turma\n14 - Consultar aulas de uma turma")
-    print("15 - Buscar aula de uma turma\n16 - Remover aula de uma turma\n17- Trocar mensagens (Diário eletrônico e chat)")
-
+    print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n7 - Buscar aluno de uma turma\n8 - Remover aluno de uma turma")
+    print("9 - Inserir novas atividades para um aluno\n10 - Consultar atividades de um aluno\n11 - Buscar atividade de um aluno\n12 - Remover atividade de um aluno")
+    print("13 - Atualizar nota de uma atividade\n14 - Inserir aulas em uma turma\n15 - Consultar aulas de uma turma\n16 - Buscar aula de uma turma")
+    print("17 - Remover aula de uma turma\n18- Trocar mensagens (Diário eletrônico e chat)")
     opcao = int(input())
     while opcao >= 1 and opcao <= 17:
         if opcao == 1:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma.insert(numero, curso)
+            listaturma.insert(numero, curso)
+            listaturma.salvar_em_arquivo("turmas.json")
         elif opcao == 2:
-            turma.print()
+            listaturma.print()
         elif opcao == 3:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             print("Turma encontrada:\n")
             print("Numero:", numero)
             print("Curso:", curso)
-            turma1.alunos.print()
         elif opcao == 4:
             numero = int(input("Insira o número da turma\n"))
-            turma.remove(numero)
+            listaturma.remove(numero)
+            listaturma.salvar_em_arquivo("turmas.json")
         elif opcao == 5:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             nome = input("Insira o nome, RA e atividades do aluno, se houver\n")
             ra = input()
             turma1.alunos.insert(nome, ra)
+            listaturma.salvar_em_arquivo("turmas.json")
         elif opcao == 6:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
+            turma1.alunos.print()
+        elif opcao == 7:
+            numero = int(input("Insira o número e o curso da turma\n"))
+            curso = input()
+            turma1 = listaturma.search(numero, curso)
             nome = input("Insira o nome do aluno\n")
             turma1.alunos.search(nome)
-        elif opcao == 7:    
+        elif opcao == 8:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             nome = input("Insira o nome do aluno\n")
             turma1.alunos.remove(nome)
-        elif opcao == 8:
+            listaturma.salvar_em_arquivo("turmas.json")
+        elif opcao == 9:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             ra = input("Insira o RA do aluno\n")
             aluno = turma1.alunos.search(ra)
             nome = input("Insira o nome e nota da atividade\n")
             nota = input()
             aluno.atividades.insert(nome)
-        elif opcao == 9:
-            numero = int(input("Insira o número e o curso da turma\n"))
-            curso = input()
-            turma1 = turma.search(numero, curso)
-            ra = input("Insira o RA do aluno\n")
-            aluno = turma1.alunos.search(ra)
-            aluno.atividades.print()
+            listaturma.salvar_em_arquivo("turmas.json")
         elif opcao == 10:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
+            ra = input("Insira o RA do aluno\n")
+            aluno = turma1.alunos.search(ra)
+            aluno.atividades.print()
+        elif opcao == 11:
+            numero = int(input("Insira o número e o curso da turma\n"))
+            curso = input()
+            turma1 = listaturma.search(numero, curso)
             ra = input("Insira o RA do aluno\n")
             aluno = turma1.alunos.search(ra)
             nome = input("Insira o nome da atividade")
             aluno.atividades.search(nome)
-        elif opcao == 11:
+        elif opcao == 12:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             ra = input("Insira o RA do aluno\n")
             aluno = turma1.alunos.search(ra)
             nome = input("Insira o nome da atividade")
             aluno.atividades.remove(nome)
-        elif opcao == 12:
+            listaturma.salvar_em_arquivo("turmas.json")
+        elif opcao == 13:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             ra = input("Insira o ra do aluno\n")
             aluno = turma1.alunos.search(ra)
             nome = input("Insira o nome da atividade")
             nota = int(input("Insira a nova nota da atividade"))
             aluno.atividades.atualizar_nota(nome, nota)
-        elif opcao == 12:    
+            listaturma.salvar_em_arquivo("turmas.json")
+        elif opcao == 14:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             nome = input("Insira os dados:\nNome da aula\n")
             data = input("Data da aula:\n")
             inicio = input("Hora de início:\n")
@@ -115,17 +114,19 @@ if cadastro_login("inicio", credencial, senha):
             professor = input("Nome do professor:\n")
             conteudo = input("Conteudo da aula:\n")
             turma1.aulas.insert(nome, data, inicio, fim, curso, professor, conteudo)
-        elif opcao == 13:    
+            listaturma.salvar_em_arquivo("turmas.json")
+        elif opcao == 15:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             turma1.aulas.print()
-        elif opcao == 14:    
+        elif opcao == 16:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             nome = input("Insira o nome da aula\n")
-            aula = turma1.aulas.search(nome)
+            data = input("Insira a data da aula")
+            aula = turma1.aulas.search(nome, data)
             print("Aula encontrada:\n")
             print("Nome:", aula.nome)
             print("Curso:", aula.curso)
@@ -134,22 +135,69 @@ if cadastro_login("inicio", credencial, senha):
             print("Fim: ", aula.fim)
             print("Professor: ", aula.professor)
             print("Conteudo:", aula.conteudo)
-        elif opcao == 15:    
+        elif opcao == 17:    
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
-            turma1 = turma.search(numero, curso)
+            turma1 = listaturma.search(numero, curso)
             nome = input("Insira o nome da aula\n")
             turma1.aulas.remove(nome, curso)
-        else:
+            listaturma.salvar_em_arquivo("turmas.json")
+        elif opcao == 18:
             subprocess.run(["./cliente"])
                         
-        
-        
         print("O que deseja fazer?\n1 - Inserir turmas\n2 - Consultar turmas\n3 - Buscar turma\n4 - Remover turma")
-        print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n6 - Buscar aluno de uma turma\n7 - Remover aluno de uma turma\n8 - Inserir novas atividades para um aluno")
-        print("9 - Consultar atividades de um aluno\n10 - Buscar atividade de um aluno\n11 - Remover atividade de um aluno\n12 - Atualizar nota de uma atividade\n13 - Inserir aulas em uma turma\n14 - Consultar aulas de uma turma")
-        print("15 - Buscar aula de uma turma\n16 - Remover aula de uma turma\n17- Trocar mensagens (Diário eletrônico e chat)")
-        opcao = int(input("Para encerrar a execução, digite um número não disponível nas opções, você será direcionado ao chat entre usuários\n"))
-
-    
-
+        print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n7 - Buscar aluno de uma turma\n8 - Remover aluno de uma turma")
+        print("9 - Inserir novas atividades para um aluno\n10 - Consultar atividades de um aluno\n11 - Buscar atividade de um aluno\n12 - Remover atividade de um aluno")
+        print("13 - Atualizar nota de uma atividade\n14 - Inserir aulas em uma turma\n15 - Consultar aulas de uma turma\n16 - Buscar aula de uma turma")
+        print("17 - Remover aula de uma turma\n18- Trocar mensagens (Diário eletrônico e chat)")
+        opcao = int(input("Para encerrar a execução, digite um número não disponível nas opções\n"))
+elif inicio.login(credencial, senha) == (True, False):
+        print("1 - Consultar suas atividades")
+        print("2 - Consultar suas aulas")
+        print("3 - Buscar uma aula específica")
+        print("4 - Trocar mensagens (Diário eletrônico e chat)")
+        opcao = int(input())
+        while opcao >= 1 and opcao <= 4:
+            if opcao == 1:
+                numero = int(input("Insira o número e o curso da turma\n"))
+                curso = input()
+                turma1 = listaturma.search(numero, curso)
+                aluno = turma1.alunos.search(credencial)
+                if aluno is not None:
+                    aluno.atividades.print()
+                else:
+                    print("Aluno não encontrado")
+            elif opcao == 2:
+                numero = int(input("Insira o número e o curso da turma\n"))
+                curso = input()
+                turma1 = listaturma.search(numero, curso)
+                turma1.aulas.print()
+            elif opcao == 3:
+                numero = int(input("Insira o número e o curso da turma\n"))
+                curso = input()
+                turma1 = listaturma.search(numero, curso)
+                nome = input("Insira o nome da aula\n")
+                data = input("Insira a data da aula")
+                aula = turma1.aulas.search(nome, data)
+                print("Aula encontrada:\n")
+                print("Nome:", aula.nome)
+                print("Curso:", aula.curso)
+                print("Data:", aula.data)
+                print("Início: ", aula.inicio)
+                print("Fim: ", aula.fim)
+                print("Professor: ", aula.professor)
+                print("Conteudo:", aula.conteudo)
+            elif opcao == 4:
+                subprocess.run(["./cliente_aluno"])
+            print("1 - Consultar suas atividades")
+            print("2 - Consultar suas aulas")
+            print("3 - Buscar uma aula específica")
+            print("4 - Trocar mensagens (Diário eletrônico e chat)")
+            opcao = int(input("Para encerrar a execução, digite um número não disponível nas opções\n"))
+else:
+    print("Login não existe, deseja fazer o cadastro?[S/n]")
+    opcao = input()
+    if opcao == 'S' or opcao == 's':
+        inicio.cadastro(credencial, senha)
+    else:
+        print("Encerrando execução")

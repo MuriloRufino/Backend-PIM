@@ -34,16 +34,20 @@ class ListaAlunos:
                 aluno.prev = curr.prev
                 curr.prev.next = aluno
                 curr.prev = aluno
+    def insert_obj(self, aluno_obj):
+        if self.head == None:
+            self.head = aluno_obj
+            self.tail = aluno_obj
+        else:
+            self.head.prev = aluno_obj
+            aluno_obj.next = self.head
+            self.head = aluno_obj
     def print(self):
         curr = self.head
-        print("Deseja mostrar as atividades dos alunos? [S/n]")
-        opcao = input()
         print("Alunos:")
         while curr is not None:
             print(curr.nome)
-            if(opcao == "S"):
-                print("Atividades:")
-                curr.atividades.print()
+            print(curr.ra)
             curr = curr.next
     def remove(self, ra):
         curr = self.head
@@ -67,11 +71,31 @@ class ListaAlunos:
             print("ra:", curr.ra)
     def search(self, ra):
         curr = self.head
-        while curr.ra != ra:
-            if(curr == self.tail and curr.ra != ra):
-                return "Valor não encontrado"
+        while curr is not None:
+            if curr.ra == ra:
+                return curr
             curr = curr.next
-        return curr
+        return None
+    def to_list(self):
+        lista = []
+        curr = self.head
+        while curr:
+            lista.append({
+                "nome": curr.nome,
+                "ra": curr.ra,
+                "atividades": curr.atividades.to_list()
+            })
+            curr = curr.next
+        return lista
+
+
+    def from_list(cls, lista_dados):
         
+        obj = cls()
+        for dado in lista_dados:
+            aluno = Aluno(dado["nome"], dado["ra"])
+            aluno.atividades = at.ListaAtividades.from_list(dado["atividades"])
+            obj.insert(aluno.nome, aluno.ra)
+        return obj
     
         

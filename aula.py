@@ -36,6 +36,14 @@ class ListaAulas:
                 aula.prev = curr.prev
                 curr.prev.next = aula
                 curr.prev = aula
+    def insert_obj(self, aula_obj):
+        if self.head == None:
+            self.head = aula_obj
+            self.tail = aula_obj
+        else:
+            self.head.prev = aula_obj
+            aula_obj.next = self.head
+            self.head = aula_obj
     def print(self):
         curr = self.head
         print("Aulas:")
@@ -65,11 +73,35 @@ class ListaAulas:
                 if curr.next is not None:
                     curr.prev.next = curr.next
                     curr.next.prev = curr.prev
-    def search(self, nome):
+    def search(self, nome, data):
         curr = self.head
-        while curr.nome != nome:
-            if(curr == self.tail and curr.nome != nome):
-                return "Aula não encontrada"
+        while curr is not None:
+            if curr.nome == nome and curr.data == data:
+                return curr
             curr = curr.next
-        return curr
-    
+        return None
+    def to_list(self):
+        lista = []
+        curr = self.head
+        while curr:
+            lista.append({
+                "nome": curr.nome,
+                "data": curr.data,
+                "inicio": curr.inicio,
+                "fim": curr.fim,
+                "curso": curr.curso,
+                "professor": curr.professor,
+                "conteudo": curr.conteudo
+            })
+            curr = curr.next
+        return lista
+
+
+    def from_list(cls, lista_dados):
+        obj = cls()
+        for dado in lista_dados:
+            obj.insert(
+                dado["nome"], dado["data"], dado["inicio"], dado["fim"],
+                dado["curso"], dado["professor"], dado["conteudo"]
+            )
+        return obj

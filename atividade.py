@@ -32,6 +32,14 @@ class ListaAtividades:
                 atividade.prev = curr.prev
                 curr.prev.next = atividade
                 curr.prev = atividade
+    def insert_obj(self, atividade_obj):
+        if self.head == None:
+            self.head = atividade_obj
+            self.tail = atividade_obj
+        else:
+            self.head.prev = atividade_obj
+            atividade_obj.next = self.head
+            self.head = atividade_obj
 
     def print(self):
         curr = self.head
@@ -62,13 +70,11 @@ class ListaAtividades:
                     
     def search(self, nome):
         curr = self.head
-        while curr.nome != nome:
-            if(curr == self.tail and curr.nome != nome):
-                return "Atividade não encontrada"
+        while curr is not None:
+            if curr.nome == nome:
+                return curr
             curr = curr.next
-        print("Atividade encontrada:")
-        print("Nome:", nome)
-        print("Nota:", curr.nota)
+        return None
     
     def atualizar_nota(self, nome, nota):
         curr = self.head
@@ -77,3 +83,20 @@ class ListaAtividades:
                 return "Atividade não encontrada"
             curr = curr.next
         curr.nota = nota
+    def to_list(self):
+        lista = []
+        curr = self.head
+        while curr:
+            lista.append({
+                "nome": curr.nome,
+                "nota": curr.nota
+            })
+            curr = curr.next
+        return lista
+
+    
+    def from_list(cls, lista_dados):
+        obj = cls()
+        for dado in lista_dados:
+            obj.insert(dado["nome"], dado["nota"])
+        return obj
