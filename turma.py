@@ -110,7 +110,7 @@ class ListaTurmas:
         # Salva no arquivo
         with open(nome_arquivo, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
-    def carregar_de_arquivo(self, arquivo):
+    def ler_de_arquivo(self, arquivo):
 
         if not os.path.exists(arquivo):
             return

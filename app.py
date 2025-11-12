@@ -3,7 +3,7 @@ import subprocess
 import inicio
 
 listaturma = t.ListaTurmas()
-listaturma.carregar_de_arquivo("turmas.json")
+listaturma.ler_de_arquivo("turmas.json")
 credencial = input("Insira sua credencial e senha\n")
 senha = input()
 if inicio.login(credencial, senha) == (True, True):
