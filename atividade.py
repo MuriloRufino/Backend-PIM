@@ -48,14 +48,14 @@ class ListaAtividades:
             print("Nota: ", curr.nota)
             curr = curr.next
     
-    def remove(self, atividade):
+    def remove(self, nome):
         curr = self.head
         if self.head == None:
             return "Lista Vazia"
         else:
-            while curr.atividade != atividade:
+            while curr.nome != nome:
                 curr = curr.next
-            print("", curr.atividade)
+            print("Atividade removida: ", curr.nome)
             
             if curr == self.head:
                 self.head = curr.next
@@ -95,8 +95,4 @@ class ListaAtividades:
         return lista
 
     
-    def from_list(cls, lista_dados):
-        obj = cls()
-        for dado in lista_dados:
-            obj.insert(dado["nome"], dado["nota"])
-        return obj
+  

@@ -90,7 +90,7 @@ if inicio.login(credencial, senha) == (True, True):
             turma1 = listaturma.search(numero, curso)
             ra = input("Insira o RA do aluno\n")
             aluno = turma1.alunos.search(ra)
-            nome = input("Insira o nome da atividade")
+            nome = input("Insira o nome da atividade\n")
             aluno.atividades.remove(nome)
             listaturma.salvar_em_arquivo("turmas.json")
         elif opcao == 13:

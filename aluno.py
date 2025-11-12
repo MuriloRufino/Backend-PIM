@@ -88,14 +88,5 @@ class ListaAlunos:
             curr = curr.next
         return lista
 
-
-    def from_list(cls, lista_dados):
-        
-        obj = cls()
-        for dado in lista_dados:
-            aluno = Aluno(dado["nome"], dado["ra"])
-            aluno.atividades = at.ListaAtividades.from_list(dado["atividades"])
-            obj.insert(aluno.nome, aluno.ra)
-        return obj
     
         

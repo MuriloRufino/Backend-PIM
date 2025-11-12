@@ -15,6 +15,7 @@
                         "nome": "Atividade 2",
                         "nota": 0
                     }
+        
                 ]
             }
         ],
@@ -29,5 +30,17 @@
                 "conteudo": "alo"
             }
         ]
+    },
+    {
+        "numero": 2,
+        "curso": "Direito",
+        "alunos": [
+            {
+                "nome": "Bruno",
+                "ra": "A51",
+                "atividades": []
+            }
+        ],
+        "aulas": []
     }
 ]

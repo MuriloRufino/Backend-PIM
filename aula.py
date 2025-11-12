@@ -97,11 +97,4 @@ class ListaAulas:
         return lista
 
 
-    def from_list(cls, lista_dados):
-        obj = cls()
-        for dado in lista_dados:
-            obj.insert(
-                dado["nome"], dado["data"], dado["inicio"], dado["fim"],
-                dado["curso"], dado["professor"], dado["conteudo"]
-            )
-        return obj
+    
