@@ -12,9 +12,9 @@ if inicio.login(credencial, senha) == (True, True):
     print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n7 - Buscar aluno de uma turma\n8 - Remover aluno de uma turma")
     print("9 - Inserir novas atividades para um aluno\n10 - Consultar atividades de um aluno\n11 - Buscar atividade de um aluno\n12 - Remover atividade de um aluno")
     print("13 - Atualizar nota de uma atividade\n14 - Inserir aulas em uma turma\n15 - Consultar aulas de uma turma\n16 - Buscar aula de uma turma")
-    print("17 - Remover aula de uma turma\n18- Trocar mensagens (Diário eletrônico e chat)")
+    print("17 - Remover aula de uma turma\n18 - Trocar mensagens (Diário eletrônico e chat)")
     opcao = int(input())
-    while opcao >= 1 and opcao <= 17:
+    while opcao >= 1 and opcao <= 18:
         if opcao == 1:
             numero = int(input("Insira o número e o curso da turma\n"))
             curso = input()
@@ -149,7 +149,7 @@ if inicio.login(credencial, senha) == (True, True):
         print("5 - Inserir novos alunos em uma turma\n6 - Consultar alunos de uma turma\n7 - Buscar aluno de uma turma\n8 - Remover aluno de uma turma")
         print("9 - Inserir novas atividades para um aluno\n10 - Consultar atividades de um aluno\n11 - Buscar atividade de um aluno\n12 - Remover atividade de um aluno")
         print("13 - Atualizar nota de uma atividade\n14 - Inserir aulas em uma turma\n15 - Consultar aulas de uma turma\n16 - Buscar aula de uma turma")
-        print("17 - Remover aula de uma turma\n18- Trocar mensagens (Diário eletrônico e chat)")
+        print("17 - Remover aula de uma turma\n18 - Trocar mensagens (Diário eletrônico e chat)")
         opcao = int(input("Para encerrar a execução, digite um número não disponível nas opções\n"))
 elif inicio.login(credencial, senha) == (True, False):
         print("1 - Consultar suas atividades")
