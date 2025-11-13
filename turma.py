@@ -26,16 +26,16 @@ class ListaTurmas:
         if self.head is None:
             self.head = turma
             self.tail = turma
-        elif turma.curso < self.head.curso:
+        elif turma.numero < self.head.numero and turma.curso <= self.head.curso:
             self.head.prev = turma
             turma.next = self.head
             self.head = turma
-        elif turma.curso > self.tail.curso:
+        elif turma.numero > self.tail.numero and turma.curso >= self.tail.curso:
             self.tail.next = turma
             turma.prev = self.tail
             self.tail = turma
         else:
-            while curr is not None and curr.curso <= turma.curso:
+            while curr is not None and curr.curso <= turma.curso and curr.numero < turma.numero:
                 curr = curr.next
             if curr is not None and curr.curso != turma.curso:
                 turma.next = curr
@@ -59,14 +59,19 @@ class ListaTurmas:
             curr = curr.next
     
         
-    def remove(self, numero):
+    def remove(self, numero, curso):
         curr = self.head
         if self.head == None:
             return "Não há turmas para remover"
         else:
-            while curr.numero != numero:
+            while curr is not None:
+                if curr.numero == numero and curr.curso == curso:
+                    break
                 curr = curr.next
-            if curr == self.head:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = None
+            elif curr == self.head:
                 self.head = curr.next
                 curr.next.prev = None
             elif curr == self.tail:

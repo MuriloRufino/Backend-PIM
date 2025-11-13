@@ -10,7 +10,7 @@ class ListaAtividades:
         self.head = None
         self.tail = None
         
-    def insert(self, nome, nota = 0):
+    def insert(self, nome, nota):
         curr = self.head
         atividade = Atividade(nome, nota)
         if self.head is None:
@@ -51,13 +51,17 @@ class ListaAtividades:
     def remove(self, nome):
         curr = self.head
         if self.head == None:
-            return "Lista Vazia"
+            return "Não há atividades para remover"
         else:
-            while curr.nome != nome:
+            while curr is not None:
+                if curr.nome == nome:
+                    break
                 curr = curr.next
             print("Atividade removida: ", curr.nome)
-            
-            if curr == self.head:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = None
+            elif curr == self.head:
                 self.head = curr.next
                 curr.next.prev = None
             elif curr == self.tail:

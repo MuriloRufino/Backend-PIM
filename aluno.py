@@ -52,12 +52,16 @@ class ListaAlunos:
     def remove(self, ra):
         curr = self.head
         if self.head == None:
-            return "Lista Vazia"
+            return "Não há alunos para remover"
         else:
-            while curr.ra != ra:
+            while curr is not None:
+                if curr.ra == ra:
+                    break
                 curr = curr.next
-            
-            if curr == self.head:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = None
+            elif curr == self.head:
                 self.head = curr.next
                 curr.next.prev = None
             elif curr == self.tail:
@@ -66,7 +70,7 @@ class ListaAlunos:
             else:
                 if curr.next is not None:
                     curr.prev.next = curr.next
-                    curr.next.prev = curr.prev
+                    curr.next.prev = curr.prev                
             print("Aluno removido:", curr.nome)
             print("ra:", curr.ra)
     def search(self, ra):

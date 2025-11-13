@@ -9,8 +9,6 @@
 #include <arpa/inet.h>
 
 #define PORT 8080
-
-
 void passar_mensagens(int from, int to) 
 {
 
@@ -93,7 +91,7 @@ int main()
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser INADDR_ANY
+    server_address.sin_addr.s_addr = INADDR_ANY; // no oficial, vai ser INADDR_ANY
     struct sockaddr_in client_address;
     socklen_t addrsize = sizeof(client_address);
     // ligando o socket no ip e porta especificados, setsockopt usado para garantir que a porta esteja desocupada

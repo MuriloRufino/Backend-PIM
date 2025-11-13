@@ -20,18 +20,18 @@ class ListaAulas:
         if self.head is None:
             self.head = aula
             self.tail = aula
-        elif curso < self.head.curso:
+        elif nome <= self.head.nome and data <= self.head.data:
             self.head.prev = aula
             aula.next = self.head
             self.head = aula
-        elif curso > self.tail.curso:
+        elif nome >= self.tail.nome:
             self.tail.next = aula
             aula.prev = self.tail
             self.tail = aula
         else:
-            while curr.curso < curso:
+            while curr.nome <= nome and data <= self.head.data:
                 curr = curr.next
-            if curr.curso != curso:
+            if curr.nome != nome:
                 aula.next = curr
                 aula.prev = curr.prev
                 curr.prev.next = aula
@@ -49,21 +49,25 @@ class ListaAulas:
         print("Aulas:")
         while curr is not None:
             print("Nome: ", curr.nome)
+            print("Data:", curr.data)
             print("Início: ", curr.inicio)
             print("Fim: ", curr.fim)
             print("Curso: ", curr.curso)
             print("Professor: ", curr.professor)
             curr = curr.next
-    def remove(self, nome):
+    def remove(self, nome, data):
         curr = self.head
         if self.head == None:
-            return "Lista Vazia"
+            return "Não há aulas para remover"
         else:
-            while curr.nome != nome:
+            while curr is not None and curr.nome != nome and curr.data != data:
+                if curr.nome == nome and curr.data == data:
+                    break
                 curr = curr.next
-            print("", curr.nome)
-            
-            if curr == self.head:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = None    
+            elif curr == self.head:
                 self.head = curr.next
                 curr.next.prev = None
             elif curr == self.tail:

@@ -74,7 +74,7 @@ void iniciar_cliente(int network_socket)
                 printf("Encerrando conexão...\n");
                 break;
             }
-            if (strncmp(message, "/diario ", 8) == 0)
+            if (strncmp(message, "/diario", 7) == 0)
             {
                 entrada_diario(network_socket);
                 continue;
@@ -98,7 +98,7 @@ int main()
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // no oficial, vai ser outro IP
+    server_address.sin_addr.s_addr = inet_addr("10.1.84.102"); // no oficial, vai ser outro IP
 
     int connection = connect(network_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 
