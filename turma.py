@@ -85,19 +85,19 @@ class ListaTurmas:
             curr = curr.next
         return None
     def salvar_em_arquivo(self, nome_arquivo):
-        data = []
+        
         curr = self.head
 
-        # Converte a lista encadeada em lista normal
+        # converte a lista criada em lista nativa do python
         turmas = []
         while curr:
             turmas.append(curr)
             curr = curr.next
 
-        # Ordena pelo atributo 'curso'
+        # ordena pelo atributo 'curso'
         turmas_ordenadas = sorted(turmas, key=lambda t: t.curso)
-
-        # Constrói a lista de dicionários para salvar no JSON
+        data = []
+        # constrói a lista nativa para salvar no arquivo
         for t in turmas_ordenadas:
             turma_dict = {
                 "numero": t.numero,
@@ -107,7 +107,7 @@ class ListaTurmas:
             }
             data.append(turma_dict)
 
-        # Salva no arquivo
+        # salva no arquivo
         with open(nome_arquivo, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
     def ler_de_arquivo(self, arquivo):
@@ -122,31 +122,31 @@ class ListaTurmas:
         self.tail = None
 
         for t_dict in data:
-            # Cria o objeto Turma
+            # cria o objeto Turma
             turma_obj = Turma(t_dict["numero"], t_dict["curso"])
 
-            # Reconstrói os alunos da turma
+            # reconstrói os alunos da turma
             for a_dict in t_dict.get("alunos", []):
                 aluno_obj = al.Aluno(a_dict["nome"], a_dict["ra"])
                 
-                # Reconstrói as atividades do aluno
+                # reconstrói as atividades do aluno
                 for atv_dict in a_dict.get("atividades", []):
                     atv_obj = at.Atividade(atv_dict["nome"], atv_dict["nota"])
-                    aluno_obj.atividades.insert_obj(atv_obj)  # Inserção do objeto completo
+                    aluno_obj.atividades.insert_obj(atv_obj) 
 
-                # Insere o aluno completo na lista de alunos da turma
+                # insere na lista de alunos da turma
                 turma_obj.alunos.insert_obj(aluno_obj)
 
-            # Reconstrói as aulas da turma
+            # reconstrói as aulas da turma
             for aula_dict in t_dict.get("aulas", []):
                 aula_obj = au.Aula(
                     aula_dict["nome"], aula_dict["data"], aula_dict["inicio"],
                     aula_dict["fim"], aula_dict["curso"], aula_dict["professor"],
                     aula_dict["conteudo"]
                 )
-                turma_obj.aulas.insert_obj(aula_obj)  # Inserção do objeto completo
+                turma_obj.aulas.insert_obj(aula_obj) 
 
-            # Insere a turma completa na lista de turmas
+            # insere na lista de turmas
             self.insert_obj(turma_obj)
         
 
